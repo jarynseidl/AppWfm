@@ -42,6 +42,8 @@ namespace WFM2
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<FSREContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("FSREConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

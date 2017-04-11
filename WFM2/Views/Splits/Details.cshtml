@@ -1,0 +1,42 @@
+@model WFM2.Models.WFM.Split
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Split</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Acd)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Acd)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Split1)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Split1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Lob)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Lob.Lob1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Vendor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vendor.Abbrev)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.SplitId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
