@@ -32,7 +32,11 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Debug\net452\win7-x86\publish\logs\" />
     <Folder Include="Models\WFM\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\net452\win7-x86\publish\hostpolicy.dll" />
   </ItemGroup>
 
 </Project>
