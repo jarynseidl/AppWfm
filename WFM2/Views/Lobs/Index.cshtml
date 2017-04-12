@@ -4,24 +4,26 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Lines of Business</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="myTable2" class="table-bordered">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Lob1)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FteDefinition)
-                </th>
-            <th>
+            <th onclick="sortTable(0)">
+                @Html.DisplayNameFor(model => model.Lob1)
+            </th>
+            <th onclick="sortTable(1)">
+                @Html.DisplayNameFor(model => model.FteDefinition)
+            </th>
+            <th onclick="sortTable(2)">
                 @Html.DisplayNameFor(model => model.Dept)
             </th>
-            <th></th>
+            <th>
+                Options
+            </th>
         </tr>
     </thead>
     <tbody>

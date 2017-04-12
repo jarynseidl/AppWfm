@@ -258,6 +258,8 @@ th {
   .table-bordered th,
   .table-bordered td {
     border: 1px solid #ddd !important;
+    padding: 10px;
+    
   }
 }
 @font-face {
@@ -2312,6 +2314,7 @@ th {
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td {
   border: 1px solid #ddd;
+  padding: 5px;
 }
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {

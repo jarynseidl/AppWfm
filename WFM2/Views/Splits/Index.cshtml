@@ -1,30 +1,32 @@
 @model IEnumerable<WFM2.Models.WFM.Split>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Splits";
 }
 
-<h2>Index</h2>
+<h2>Splits</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="myTable2" class="table-bordered">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Acd)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Split1)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Acd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Split1)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Lob)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Vendor)
             </th>
-            <th></th>
+            <th>
+                Options
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -34,7 +36,7 @@
                 @Html.DisplayFor(modelItem => item.Acd)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Split1)
+                <a asp-action="Details" asp-route-id="@item.SplitId">@Html.DisplayFor(modelItem => item.Split1)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Lob.Lob1)
@@ -43,9 +45,13 @@
                 @Html.DisplayFor(modelItem => item.Vendor.Vendor1)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.SplitId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SplitId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SplitId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.SplitId">
+                    <img src="~/images/iconEdit.png" alt="Edit" />
+                </a> |
+                @*<a asp-action="Details" asp-route-id="@item.SplitId">Details</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.SplitId">
+                    <img src="~/images/iconDelete.png" alt="Delete" />
+                </a>
             </td>
         </tr>
 }

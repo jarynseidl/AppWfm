@@ -36,6 +36,7 @@ namespace WFM2.Controllers
 
             var lob = await _context.Lob
                 .Include(l => l.Dept)
+                .Include(l => l.Split)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (lob == null)
             {
