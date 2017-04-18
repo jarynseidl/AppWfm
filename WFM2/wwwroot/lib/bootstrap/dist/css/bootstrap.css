@@ -259,7 +259,7 @@ th {
   .table-bordered td {
     border: 1px solid #ddd !important;
     padding: 10px;
-    
+    cursor: pointer;
   }
 }
 @font-face {

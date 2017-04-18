@@ -10,23 +10,22 @@ using WFM2.Models.WFM;
 
 namespace WFM2.Controllers
 {
-    public class SplitsController : Controller
+    public class VendorsController : Controller
     {
         private readonly FSREContext _context;
 
-        public SplitsController(FSREContext context)
+        public VendorsController(FSREContext context)
         {
             _context = context;    
         }
 
-        // GET: Splits
+        // GET: Vendors
         public async Task<IActionResult> Index()
         {
-            var fSREContext = _context.Split.Include(s => s.Lob).Include(s => s.Vendor);
-            return View(await fSREContext.ToListAsync());
+            return View(await _context.Vendor.ToListAsync());
         }
 
-        // GET: Splits/Details/5
+        // GET: Vendors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +33,39 @@ namespace WFM2.Controllers
                 return NotFound();
             }
 
-            var split = await _context.Split
-                .Include(s => s.Lob)
-                .Include(s => s.Vendor)
-                .SingleOrDefaultAsync(m => m.SplitId == id);
-            if (split == null)
+            var vendor = await _context.Vendor
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (vendor == null)
             {
                 return NotFound();
             }
 
-            return View(split);
+            return View(vendor);
         }
 
-        // GET: Splits/Create
+        // GET: Vendors/Create
         public IActionResult Create()
         {
-            ViewData["LobId"] = new SelectList(_context.Lob, "Id", "Lob1");
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Vendor1");
             return View();
         }
 
-        // POST: Splits/Create
+        // POST: Vendors/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SplitId,VendorId,Acd,Split1,LobId,CTF")] Split split)
+        public async Task<IActionResult> Create([Bind("Id,Vendor1,Abbrev")] Vendor vendor)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(split);
+                _context.Add(vendor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["LobId"] = new SelectList(_context.Lob, "Id", "Lob1", split.LobId);
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Abbrev", split.VendorId);
-            return View(split);
+            return View(vendor);
         }
 
-        // GET: Splits/Edit/5
+        // GET: Vendors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +73,22 @@ namespace WFM2.Controllers
                 return NotFound();
             }
 
-            var split = await _context.Split.SingleOrDefaultAsync(m => m.SplitId == id);
-            if (split == null)
+            var vendor = await _context.Vendor.SingleOrDefaultAsync(m => m.Id == id);
+            if (vendor == null)
             {
                 return NotFound();
             }
-            ViewData["LobId"] = new SelectList(_context.Lob, "Id", "Lob1", split.LobId);
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Vendor1", split.VendorId);
-            return View(split);
+            return View(vendor);
         }
 
-        // POST: Splits/Edit/5
+        // POST: Vendors/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SplitId,VendorId,Acd,Split1,LobId,CTF")] Split split)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Vendor1,Abbrev")] Vendor vendor)
         {
-            if (id != split.SplitId)
+            if (id != vendor.Id)
             {
                 return NotFound();
             }
@@ -106,12 +97,12 @@ namespace WFM2.Controllers
             {
                 try
                 {
-                    _context.Update(split);
+                    _context.Update(vendor);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SplitExists(split.SplitId))
+                    if (!VendorExists(vendor.Id))
                     {
                         return NotFound();
                     }
@@ -122,12 +113,10 @@ namespace WFM2.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["LobId"] = new SelectList(_context.Lob, "Id", "Lob1", split.LobId);
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Abbrev", split.VendorId);
-            return View(split);
+            return View(vendor);
         }
 
-        // GET: Splits/Delete/5
+        // GET: Vendors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +124,30 @@ namespace WFM2.Controllers
                 return NotFound();
             }
 
-            var split = await _context.Split
-                .Include(s => s.Lob)
-                .Include(s => s.Vendor)
-                .SingleOrDefaultAsync(m => m.SplitId == id);
-            if (split == null)
+            var vendor = await _context.Vendor
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (vendor == null)
             {
                 return NotFound();
             }
 
-            return View(split);
+            return View(vendor);
         }
 
-        // POST: Splits/Delete/5
+        // POST: Vendors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var split = await _context.Split.SingleOrDefaultAsync(m => m.SplitId == id);
-            _context.Split.Remove(split);
+            var vendor = await _context.Vendor.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Vendor.Remove(vendor);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool SplitExists(int id)
+        private bool VendorExists(int id)
         {
-            return _context.Split.Any(e => e.SplitId == id);
+            return _context.Vendor.Any(e => e.Id == id);
         }
     }
 }

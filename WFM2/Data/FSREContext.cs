@@ -435,6 +435,8 @@ namespace WFM2.Data
 
                 entity.Property(e => e.VendorId).HasColumnName("Vendor_ID");
 
+                entity.Property(e => e.CTF).HasColumnName("CTF");
+
                 entity.HasOne(d => d.Lob)
                     .WithMany(p => p.Split)
                     .HasForeignKey(d => d.LobId)

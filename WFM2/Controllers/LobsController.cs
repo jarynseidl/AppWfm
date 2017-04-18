@@ -37,7 +37,10 @@ namespace WFM2.Controllers
             var lob = await _context.Lob
                 .Include(l => l.Dept)
                 .Include(l => l.Split)
+                .ThenInclude(s => s.Vendor)
+                //.Include(l => l.Split.Select(s => s.Vendor))
                 .SingleOrDefaultAsync(m => m.Id == id);
+            
             if (lob == null)
             {
                 return NotFound();

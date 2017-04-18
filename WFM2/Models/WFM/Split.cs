@@ -12,6 +12,7 @@ namespace WFM2.Models.WFM
         [Display(Name = "Split")]
         public short Split1 { get; set; }
         public int? LobId { get; set; }
+        public bool CTF { get; set; }
 
         public virtual Lob Lob { get; set; }
         public virtual Vendor Vendor { get; set; }

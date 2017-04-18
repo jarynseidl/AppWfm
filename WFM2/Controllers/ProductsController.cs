@@ -5,28 +5,28 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WFM2.Data;
+using WFM2.Models;
 using WFM2.Models.WFM;
 
 namespace WFM2.Controllers
 {
-    public class SplitsController : Controller
+    public class ProductsController : Controller
     {
-        private readonly FSREContext _context;
+        private readonly ProductContext _context;
 
-        public SplitsController(FSREContext context)
+        public ProductsController(ProductContext context)
         {
             _context = context;    
         }
 
-        // GET: Splits
+        // GET: Products
         public async Task<IActionResult> Index()
         {
-            var fSREContext = _context.Split.Include(s => s.Lob).Include(s => s.Vendor);
-            return View(await fSREContext.ToListAsync());
+            var productContext = _context.Product.Include(p => p.Cat);
+            return View(await productContext.ToListAsync());
         }
 
-        // GET: Splits/Details/5
+        // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +34,42 @@ namespace WFM2.Controllers
                 return NotFound();
             }
 
-            var split = await _context.Split
-                .Include(s => s.Lob)
-                .Include(s => s.Vendor)
-                .SingleOrDefaultAsync(m => m.SplitId == id);
-            if (split == null)
+            var product = await _context.Product
+                .Include(p => p.Cat)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(split);
+            return View(product);
         }
 
-        // GET: Splits/Create
+        // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["LobId"] = new SelectList(_context.Lob, "Id", "Lob1");
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Vendor1");
+            ViewData["CatId"] = new SelectList(_context.Set<ProductCategory>(), "Id", "Id");
             return View();
         }
 
-        // POST: Splits/Create
+        // POST: Products/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SplitId,VendorId,Acd,Split1,LobId,CTF")] Split split)
+        public async Task<IActionResult> Create([Bind("Id,CatId,Name")] Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(split);
+                _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["LobId"] = new SelectList(_context.Lob, "Id", "Lob1", split.LobId);
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Abbrev", split.VendorId);
-            return View(split);
+            ViewData["CatId"] = new SelectList(_context.Set<ProductCategory>(), "Id", "Id", product.CatId);
+            return View(product);
         }
 
-        // GET: Splits/Edit/5
+        // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +77,23 @@ namespace WFM2.Controllers
                 return NotFound();
             }
 
-            var split = await _context.Split.SingleOrDefaultAsync(m => m.SplitId == id);
-            if (split == null)
+            var product = await _context.Product.SingleOrDefaultAsync(m => m.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            ViewData["LobId"] = new SelectList(_context.Lob, "Id", "Lob1", split.LobId);
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Vendor1", split.VendorId);
-            return View(split);
+            ViewData["CatId"] = new SelectList(_context.Set<ProductCategory>(), "Id", "Id", product.CatId);
+            return View(product);
         }
 
-        // POST: Splits/Edit/5
+        // POST: Products/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SplitId,VendorId,Acd,Split1,LobId,CTF")] Split split)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CatId,Name")] Product product)
         {
-            if (id != split.SplitId)
+            if (id != product.Id)
             {
                 return NotFound();
             }
@@ -106,12 +102,12 @@ namespace WFM2.Controllers
             {
                 try
                 {
-                    _context.Update(split);
+                    _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SplitExists(split.SplitId))
+                    if (!ProductExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -122,12 +118,11 @@ namespace WFM2.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["LobId"] = new SelectList(_context.Lob, "Id", "Lob1", split.LobId);
-            ViewData["VendorId"] = new SelectList(_context.Vendor, "Id", "Abbrev", split.VendorId);
-            return View(split);
+            ViewData["CatId"] = new SelectList(_context.Set<ProductCategory>(), "Id", "Id", product.CatId);
+            return View(product);
         }
 
-        // GET: Splits/Delete/5
+        // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +130,31 @@ namespace WFM2.Controllers
                 return NotFound();
             }
 
-            var split = await _context.Split
-                .Include(s => s.Lob)
-                .Include(s => s.Vendor)
-                .SingleOrDefaultAsync(m => m.SplitId == id);
-            if (split == null)
+            var product = await _context.Product
+                .Include(p => p.Cat)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(split);
+            return View(product);
         }
 
-        // POST: Splits/Delete/5
+        // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var split = await _context.Split.SingleOrDefaultAsync(m => m.SplitId == id);
-            _context.Split.Remove(split);
+            var product = await _context.Product.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Product.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool SplitExists(int id)
+        private bool ProductExists(int id)
         {
-            return _context.Split.Any(e => e.SplitId == id);
+            return _context.Product.Any(e => e.Id == id);
         }
     }
 }

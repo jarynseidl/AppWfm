@@ -26,11 +26,57 @@
             @Html.DisplayNameFor(model => model.Dept)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Dept.Id)
+            @Html.DisplayFor(model => model.Dept.Name)
         </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div>
+<div>
+    <h3>Splits for Lob</h3>
+    <table id="myTable2" class="table">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">
+                    ACD
+                </th>
+                <th onclick="sortTable(0)">
+                    Split
+                </th>
+                <th onclick="sortTable(0)">
+                    Vendor
+                </th>
+                <th>
+                    Options
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Split)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Acd)
+                    </td>
+                    <td>
+                        <a asp-controller="Splits" asp-action="Details" asp-route-id="@item.SplitId">@Html.DisplayFor(modelItem => item.Split1)</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Vendors" asp-action="Details" asp-route-id="@item.Vendor.Id">@Html.DisplayFor(modelItem => item.Vendor.Vendor1)</a>
+                    </td>
+                    <td>
+                        <a asp-controller="Splits" asp-action="Edit" asp-route-id="@item.SplitId">
+                            <img src="~/images/iconEdit.png" alt="Edit" />
+                        </a> | 
+@*                        <a asp-controller="Splits" asp-action="Details" asp-route-id="@item.SplitId">Details</a> | *@
+                        <a asp-controller="Splits" asp-action="Delete" asp-route-id="@item.SplitId">
+                            <img src="~/images/iconDelete.png" alt="Delete" />
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
